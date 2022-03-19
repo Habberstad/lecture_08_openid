@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 
@@ -18,12 +18,57 @@ function Frontpage() {
   );
 }
 
+async function fetchJSON(url) {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed ${res.status}`);
+  }
+  return await res.json();
+}
+
+function Login() {
+  const [redirectUrl, setRedirectUrl] = useState();
+
+  useEffect(async () => {
+    const { authorization_endpoint } = await fetchJSON(
+      "https://accounts.google.com/.well-known/openid-configuration"
+    );
+
+    const parameters = {
+      response_type: "token",
+      client_id:
+        "1015959050003-rgbuu41fh7a0q95jg2dtj7ukg613eqsp.apps.googleusercontent.com",
+      scope: "email profile",
+      redirect_uri: window.location.origin + "/login/callback",
+    };
+
+    setRedirectUrl(
+      authorization_endpoint + "?" + new URLSearchParams(parameters)
+    );
+  }, []);
+
+  return (
+    <div>
+      <h1>Login updated</h1>
+      <a href={redirectUrl}>Do login</a>
+      <p>{redirectUrl}</p>
+    </div>
+  );
+}
+
 function Application() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path={"/"} element={<Frontpage />} />
-        <Route path={"/login"} element={"Login"} />
+        <Route
+          path={"/login"}
+          element={
+            <h1>
+              <Login />
+            </h1>
+          }
+        />
         <Route path={"/login/callback"} element={"Login callback"} />
         <Route path={"/profile"} element={"Profile"} />
       </Routes>
