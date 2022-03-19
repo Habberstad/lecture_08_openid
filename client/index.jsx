@@ -11,7 +11,7 @@ function Frontpage() {
           <Link to={"login"}>Login</Link>
         </div>
         <div>
-          <Link to={"profile"}>Profile</Link>
+          <Link to={"profile"}>Your profile</Link>
         </div>
       </div>
     </div>
