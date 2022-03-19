@@ -8,7 +8,7 @@ function Frontpage() {
       <h1>Frontpage</h1>
       <div>
         <div>
-          <Link to={"login"}>Login</Link>
+          <Link to={"login"}>Login </Link>
         </div>
         <div>
           <Link to={"profile"}>Your profile</Link>
